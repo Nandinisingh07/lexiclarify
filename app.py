@@ -14,7 +14,6 @@ app = Flask(__name__)
 ANALYZED_DOCUMENTS = []
 DOCUMENT_ID_COUNTER = 0
 
-
 try:
     api_key = os.environ.get("GOOGLE_API_KEY")
     if not api_key:
