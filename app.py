@@ -7,16 +7,15 @@ import io
 from google.generativeai.types import HarmCategory, HarmBlockThreshold
 from dotenv import load_dotenv
 
-# This loads the .env file for local development
+
 load_dotenv()
 app = Flask(__name__)
 
 ANALYZED_DOCUMENTS = []
 DOCUMENT_ID_COUNTER = 0
 
-# --- SECURE AI Configuration ---
+
 try:
-    # This securely reads the key from the environment. It's not hardcoded.
     api_key = os.environ.get("GOOGLE_API_KEY")
     if not api_key:
         raise ValueError("GOOGLE_API_KEY environment variable is not set. For local testing, ensure it's in a .env file.")
