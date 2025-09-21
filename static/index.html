@@ -12,12 +12,12 @@
     
     <style>
         :root {
-            --primary-color: #4A44C4; 
-            --secondary-color: #5A6A85; 
+            --primary-color: #4A44C4; /* Royal Purple */
+            --secondary-color: #5A6A85; /* Cool Slate */
             --background-start: #EAEBF0;
             --background-end: #D9DDE6;
             --card-background: rgba(255, 255, 255, 0.7);
-            --text-color: #1E293B; 
+            --text-color: #1E293B; /* Dark Slate */
             --border-color: rgba(255, 255, 255, 0.5);
             --shadow-color: rgba(0, 0, 0, 0.08);
         }
@@ -68,7 +68,7 @@
         
         .btn-speak, .btn-stop-speak { background: none; border: none; color: var(--secondary-color); cursor: pointer; transition: color 0.2s ease; }
         .btn-speak:hover { color: var(--primary-color); }
-        .btn-stop-speak:hover { color: #dc3545;  }
+        .btn-stop-speak:hover { color: #dc3545; /* Red for stop */ }
     </style>
 </head>
 <body>
@@ -153,7 +153,8 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body" id="historyModalBody">
-            </div>
+            <!-- History will be injected here -->
+          </div>
         </div>
       </div>
     </div>
@@ -203,7 +204,8 @@
             loader.style.display = 'block';
             
             try {
-                const response = await fetch(`http://127.0.0.1:5000${endpoint}`, { method: 'POST', headers: headers, body: body });
+                // CORRECTED: Use a relative URL for deployment
+                const response = await fetch(endpoint, { method: 'POST', headers: headers, body: body });
                 if (!response.ok) {
                     const errorData = await response.json();
                     throw new Error(errorData.error || `Server error: ${response.status}`);
@@ -224,7 +226,7 @@
 
         function speakText(text, langKey) {
             if ('speechSynthesis' in window) {
-                speechSynthesis.cancel(); // Stop any previous speech before starting a new one
+                speechSynthesis.cancel();
                 const utterance = new SpeechSynthesisUtterance(text);
                 utterance.lang = languageMap[langKey].code;
                 speechSynthesis.speak(utterance);
@@ -233,7 +235,6 @@
             }
         }
 
-        
         function stopSpeaking() {
             if ('speechSynthesis' in window) {
                 speechSynthesis.cancel();
@@ -299,7 +300,6 @@
             new bootstrap.Tab(document.getElementById('summary-tab')).show();
         }
 
-        
         async function showHistory() {
             const modalBody = document.getElementById('historyModalBody');
             modalBody.innerHTML = '<div class="text-center p-4"><div class="spinner-border text-primary" role="status"></div></div>';
@@ -308,7 +308,8 @@
             historyModal.show();
             
             try {
-                const response = await fetch('http://127.0.0.1:5000/list-documents');
+                // CORRECTED: Use a relative URL for deployment
+                const response = await fetch('/list-documents');
                 if (!response.ok) { throw new Error('Failed to load history.'); }
                 const documents = await response.json();
 
